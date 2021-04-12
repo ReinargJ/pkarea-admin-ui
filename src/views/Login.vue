@@ -26,11 +26,10 @@
 
       <form class="mt-4" @submit.prevent="login">
         <label class="block">
-          <span class="text-gray-700 text-sm">Email</span>
+          <span class="text-gray-700 text-sm">Login</span>
           <input
-            type="email"
             class="mt-1 block w-full rounded-md focus:border-indigo-600"
-            v-model="email"
+            v-model="model.email"
           />
         </label>
 
@@ -39,7 +38,7 @@
           <input
             type="password"
             class="mt-1 block w-full rounded-md focus:border-indigo-600"
-            v-model="password"
+            v-model="model.password"
           />
         </label>
 
@@ -74,23 +73,38 @@
 </template>
 
 <script>
-import { defineComponent, ref } from "vue";
+import { defineComponent, reactive } from "vue";
 import { useRouter } from "vue-router";
+import axios from "axios";
 
 export default defineComponent({
   setup() {
     const router = useRouter();
-    const email = ref("johndoe@mail.com");
-    const password = ref("@#!@#asdf1231!_!@#");
+    const model = reactive({ username: "", password: "" });
 
     function login() {
-      router.push("/dashboard");
+      const http = axios.create(); // unsecured
+      // const result = http
+      //   .post("http://localhost:10000/authenticate", model, {})
+      //   .then((result) => {
+      //     console.log(result);
+      //     if (result.data.success) {
+      //       router.push("/dashboard");
+      //     }
+      //   });
+      const result = http
+        .get("http://localhost:10000/")
+        .then((result) => {
+          console.log(result);
+          if (result.status == 200) {
+            router.push("/dashboard");
+          }
+        }); 
     }
 
     return {
       login,
-      email,
-      password,
+      model,
     };
   },
 });
