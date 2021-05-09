@@ -80,9 +80,10 @@ import axios from "axios";
 export default defineComponent({
   setup() {
     const router = useRouter();
-    const model = reactive({ username: "", password: "" });
+    const model = reactive({ email: "", password: "" });
 
     function login() {
+      console.log(model)
       const http = axios.create(); // unsecured
       // const result = http
       //   .post("http://localhost:10000/authenticate", model, {})
@@ -93,12 +94,14 @@ export default defineComponent({
       //     }
       //   });
       const result = http
-        .get("http://localhost:10000/")
+        .post("http://localhost:10000/auth/login", {email: model.email, password: model.password})
         .then((result) => {
           console.log(result);
           if (result.status == 200) {
             router.push("/dashboard");
           }
+        }).catch(err => {
+          console.log(err);
         }); 
     }
 
