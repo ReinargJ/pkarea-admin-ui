@@ -3,175 +3,98 @@
     <h3 class="text-gray-700 text-3xl font-medium">PK Area</h3>
 
     <div class="mt-8">
-      <h4 class="text-gray-600">Wide Table</h4>
-
-      <div class="flex flex-col mt-6">
-        <div
-          class="-my-2 py-2 overflow-x-auto sm:-mx-6 sm:px-6 lg:-mx-8 lg:px-8"
-        >
-          <div
-            class="align-middle inline-block min-w-full shadow overflow-hidden sm:rounded-lg border-b border-gray-200"
-          >
-            <table class="min-w-full">
-              <thead>
-                <tr>
-                  <th
-                    class="px-6 py-3 border-b border-gray-200 bg-gray-100 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider"
-                  >
-                    PK debut
-                  </th>
-                  <th
-                    class="px-6 py-3 border-b border-gray-200 bg-gray-100 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider"
-                  >
-                    PK Fin
-                  </th>
-                  <th
-                    class="px-6 py-3 border-b border-gray-200 bg-gray-100 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider"
-                  >
-                    PK Autoroute
-                  </th>
-                  <th
-                    class="px-6 py-3 border-b border-gray-200 bg-gray-100 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider"
-                  >
-                    PK voie
-                  </th>
-                  <th
-                    class="px-6 py-3 border-b border-gray-200 bg-gray-100 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider"
-                  >
-                    PK type
-                  </th>
-                  <th
-                    class="px-6 py-3 border-b border-gray-200 bg-gray-100 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider"
-                  >
-                    PK debut de zone
-                  </th>
-                  <th
-                    class="px-6 py-3 border-b border-gray-200 bg-gray-100 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider"
-                  >
-                    PK fin de zone
-                  </th>
-                </tr>
-              </thead>
-
-              <tbody class="bg-white">
-                <tr v-for="(pk, index) in pks" :key="index">
-                  <td
-                    class="px-6 py-4 whitespace-nowrap border-b border-gray-200"
-                  >
-                    <div class="flex items-center">
-                      <div class="ml-4">
-                        <div
-                          class="text-sm leading-5 font-medium text-gray-900"
-                        >
-                          {{ pk.pk_debut }}
-                        </div>
-                      </div>
-                    </div>
-                  </td>
-
-                  <td
-                    class="px-6 py-4 whitespace-nowrap border-b border-gray-200"
-                  >
-                    <div class="flex items-center">
-                      <div class="ml-4">
-                        <div
-                          class="text-sm leading-5 font-medium text-gray-900"
-                        >
-                          {{ pk.pk_fin }}
-                        </div>
-                      </div>
-                    </div>
-                  </td>
-
-                  <td
-                    class="px-6 py-4 whitespace-nowrap border-b border-gray-200"
-                  >
-                    <div class="flex items-center">
-                      <div class="ml-4">
-                        <div
-                          class="text-sm leading-5 font-medium text-gray-900"
-                        >
-                          {{ pk.pk_autoroute }}
-                        </div>
-                      </div>
-                    </div>
-                  </td>
-
-                  <td
-                    class="px-6 py-4 whitespace-nowrap border-b border-gray-200"
-                  >
-                    <div class="flex items-center">
-                      <div class="ml-4">
-                        <div
-                          class="text-sm leading-5 font-medium text-gray-900"
-                        >
-                          {{ pk.pk_voie }}
-                        </div>
-                      </div>
-                    </div>
-                  </td>
-
-                  <td
-                    class="px-6 py-4 whitespace-nowrap border-b border-gray-200"
-                  >
-                    <div class="flex items-center">
-                      <div class="ml-4">
-                        <div
-                          class="text-sm leading-5 font-medium text-gray-900"
-                        >
-                          {{ pk.pk_type }}
-                        </div>
-                      </div>
-                    </div>
-                  </td>
-
-                  <td
-                    class="px-6 py-4 whitespace-nowrap border-b border-gray-200"
-                  >
-                    <div class="flex items-center">
-                      <div class="ml-4">
-                        <div
-                          class="text-sm leading-5 font-medium text-gray-900"
-                        >
-                          {{ pk.pk_debut_zone }}
-                        </div>
-                      </div>
-                    </div>
-                  </td>
-
-                  <td
-                    class="px-6 py-4 whitespace-nowrap border-b border-gray-200"
-                  >
-                    <div class="flex items-center">
-                      <div class="ml-4">
-                        <div
-                          class="text-sm leading-5 font-medium text-gray-900"
-                        >
-                          {{ pk.pk_fin_zone }}
-                        </div>
-                      </div>
-                    </div>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
-      </div>
+      <DataTable
+        dataKey="pk_id"
+        :value="pks"
+        :paginator="true"
+        :rows="50"
+        editMode="row"
+        class="editable-cells-table"
+        v-model:editingRows="editingRows"
+        removableSort="true"
+        @rowEditInit="onRowEditInit"
+        @rowEditCancel="onRowEditCancel"
+        @rowEditSave="onRowEditSave"
+      >
+        <Column field="pk_debut" header="PK debut" sortable="true">
+          <template #editor="slotProps">
+            <InputText v-model="slotProps.data[slotProps.column.props.field]" />
+          </template>
+        </Column>
+        <Column field="pk_fin" header="PK fin" sortable="true"
+          ><template #editor="slotProps">
+            <InputText
+              v-model="slotProps.data[slotProps.column.props.field]"
+            /> </template
+        ></Column>
+        <Column field="pk_voie" header="Voie" sortable="true"
+          ><template #editor="slotProps">
+            <InputText
+              v-model="slotProps.data[slotProps.column.props.field]"
+            /> </template
+        ></Column>
+        <Column field="pk_type" header="Type" sortable="true"
+          ><template #editor="slotProps">
+            <InputText
+              v-model="slotProps.data[slotProps.column.props.field]"
+            /> </template
+        ></Column>
+        <Column field="pk_autoroute" header="Autoroute" sortable="true"
+          ><template #editor="slotProps">
+            <InputText
+              v-model="slotProps.data[slotProps.column.props.field]"
+            /> </template
+        ></Column>
+        <Column field="pk_sens" header="sens" sortable="true"
+          ><template #editor="slotProps">
+            <InputText
+              v-model="slotProps.data[slotProps.column.props.field]"
+            /> </template
+        ></Column>
+        <Column field="pk_debut_zone" header="PK debut zone" sortable="true"
+          ><template #editor="slotProps">
+            <InputText
+              v-model="slotProps.data[slotProps.column.props.field]"
+            /> </template
+        ></Column>
+        <Column field="pk_fin_zone" header="PK fin zone" sortable="true"
+          ><template #editor="slotProps">
+            <InputText
+              v-model="slotProps.data[slotProps.column.props.field]"
+            /> </template
+        ></Column>
+        <Column
+          :rowEditor="true"
+          style="width: 10%; min-width: 8rem"
+          bodyStyle="text-align:center"
+        ></Column>
+      </DataTable>
+      <AddPkModal />
     </div>
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent, reactive } from "vue";
+import { defineComponent } from "vue";
 import PkService from "../service/PkService";
-import { useTableData } from "../hooks/useTableData";
+import AddPkModal from "./modal/AddPkModal.vue";
 
 export default defineComponent({
   data() {
     return {
-      pks: [],
+      pks:[],
+      editingRows: [],
+      editingCellRows: [],
+      pk: [],
+      original: [],
+      updates: [],
+      inserts: [],
+      originalRows: {},
     };
+  },
+
+  created() {
+    this.originalRows = {};
   },
   mounted() {
     PkService.getAll()
@@ -183,6 +106,20 @@ export default defineComponent({
       .catch((err) => {
         console.log(err);
       });
+  },
+  methods: {
+    onRowEditSave(event: any) {
+      PkService.updatePk(event.data)
+    },
+    onRowEditInit(event) {
+      this.originalRows[event.index] = { ...this.pks[event.index] };
+    },
+    onRowEditCancel(event: any) {
+      this.pks[event.index] = this.originalRows[event.index];
+    },
+  },
+  components: {
+    AddPkModal,
   },
 });
 </script>

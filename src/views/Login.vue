@@ -109,6 +109,6 @@ export default defineComponent({
       login,
       model,
     };
-  },
+  }
 });
 </script>
