@@ -80,7 +80,7 @@ import axios from "axios";
 export default defineComponent({
   setup() {
     const router = useRouter();
-    const model = reactive({ email: "", password: "" });
+    const model = reactive({ email: "test", password: "test" });
 
     function login() {
       console.log(model)

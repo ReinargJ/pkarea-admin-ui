@@ -45,7 +45,7 @@
                   >
                     PK debut de zone
                   </th>
-                                    <th
+                  <th
                     class="px-6 py-3 border-b border-gray-200 bg-gray-100 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider"
                   >
                     PK fin de zone
@@ -54,27 +54,16 @@
               </thead>
 
               <tbody class="bg-white">
-                <tr v-for="(u, index) in pks" :key="index">
+                <tr v-for="(pk, index) in pks" :key="index">
                   <td
                     class="px-6 py-4 whitespace-nowrap border-b border-gray-200"
                   >
                     <div class="flex items-center">
-                      <div class="flex-shrink-0 h-10 w-10">
-                        <img
-                          class="h-10 w-10 rounded-full"
-                          src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
-                          alt
-                        />
-                      </div>
-
                       <div class="ml-4">
                         <div
                           class="text-sm leading-5 font-medium text-gray-900"
                         >
-                          {{ u.name }}
-                        </div>
-                        <div class="text-sm leading-5 text-gray-500">
-                          {{ u.email }}
+                          {{ pk.pk_debut }}
                         </div>
                       </div>
                     </div>
@@ -83,35 +72,85 @@
                   <td
                     class="px-6 py-4 whitespace-nowrap border-b border-gray-200"
                   >
-                    <div class="text-sm leading-5 text-gray-900">
-                      {{ u.title }}
-                    </div>
-                    <div class="text-sm leading-5 text-gray-500">
-                      {{ u.title2 }}
+                    <div class="flex items-center">
+                      <div class="ml-4">
+                        <div
+                          class="text-sm leading-5 font-medium text-gray-900"
+                        >
+                          {{ pk.pk_fin }}
+                        </div>
+                      </div>
                     </div>
                   </td>
 
                   <td
                     class="px-6 py-4 whitespace-nowrap border-b border-gray-200"
                   >
-                    <span
-                      class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800"
-                      >{{ u.status }}</span
-                    >
+                    <div class="flex items-center">
+                      <div class="ml-4">
+                        <div
+                          class="text-sm leading-5 font-medium text-gray-900"
+                        >
+                          {{ pk.pk_autoroute }}
+                        </div>
+                      </div>
+                    </div>
                   </td>
 
                   <td
-                    class="px-6 py-4 whitespace-nowrap border-b border-gray-200 text-sm leading-5 text-gray-500"
+                    class="px-6 py-4 whitespace-nowrap border-b border-gray-200"
                   >
-                    {{ u.role }}
+                    <div class="flex items-center">
+                      <div class="ml-4">
+                        <div
+                          class="text-sm leading-5 font-medium text-gray-900"
+                        >
+                          {{ pk.pk_voie }}
+                        </div>
+                      </div>
+                    </div>
                   </td>
 
                   <td
-                    class="px-6 py-4 whitespace-nowrap text-right border-b border-gray-200 text-sm leading-5 font-medium"
+                    class="px-6 py-4 whitespace-nowrap border-b border-gray-200"
                   >
-                    <a href="#" class="text-indigo-600 hover:text-indigo-900"
-                      >Edit</a
-                    >
+                    <div class="flex items-center">
+                      <div class="ml-4">
+                        <div
+                          class="text-sm leading-5 font-medium text-gray-900"
+                        >
+                          {{ pk.pk_type }}
+                        </div>
+                      </div>
+                    </div>
+                  </td>
+
+                  <td
+                    class="px-6 py-4 whitespace-nowrap border-b border-gray-200"
+                  >
+                    <div class="flex items-center">
+                      <div class="ml-4">
+                        <div
+                          class="text-sm leading-5 font-medium text-gray-900"
+                        >
+                          {{ pk.pk_debut_zone }}
+                        </div>
+                      </div>
+                    </div>
+                  </td>
+
+                  <td
+                    class="px-6 py-4 whitespace-nowrap border-b border-gray-200"
+                  >
+                    <div class="flex items-center">
+                      <div class="ml-4">
+                        <div
+                          class="text-sm leading-5 font-medium text-gray-900"
+                        >
+                          {{ pk.pk_fin_zone }}
+                        </div>
+                      </div>
+                    </div>
                   </td>
                 </tr>
               </tbody>
@@ -124,23 +163,26 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
-
+import { defineComponent, reactive } from "vue";
+import PkService from "../service/PkService";
 import { useTableData } from "../hooks/useTableData";
 
 export default defineComponent({
-  setup() {
-    const {
-      simpleTableData,
-      paginatedTableData,
-      wideTableData,
-    } = useTableData();
-
+  data() {
     return {
-      simpleTableData,
-      paginatedTableData,
-      wideTableData,
+      pks: [],
     };
+  },
+  mounted() {
+    PkService.getAll()
+      .then((response) => {
+        console.log(response);
+
+        this.pks = response.data;
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   },
 });
 </script>
