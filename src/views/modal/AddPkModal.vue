@@ -1,20 +1,37 @@
 <template>
   <Dialog
-    v-model:visible="showInsert"
+    v-model:visible="open"
     :style="{ width: '450px' }"
     header="Ajouter un PK"
     :modal="true"
     class="p-fluid"
+    @hide="onHide"
   >
-    hello
+    <div class="p-field">
+      <label for="name">Name</label>
+      <InputText
+        id="name"
+        v-model.trim="product.name"
+        required="true"
+        autofocus
+        :class="{ 'p-invalid': submitted && !product.name }"
+      />
+      <small class="p-error" v-if="submitted && !product.name"
+        >Name is required.</small
+      >
+    </div>
   </Dialog>
 </template>
 
 <script>
 import { defineComponent } from "vue";
 import Dialog from "primevue/dialog";
+import InputText from "primevue/inputtext";
 
 export default defineComponent({
+  props: {
+    open: Boolean
+  },
   data() {
     return {
       pks: null,
@@ -26,13 +43,16 @@ export default defineComponent({
     };
   },
   productService: null,
-  created() {
+  created() {},
+  mounted() {},
+  methods: {
+    onHide() {
+      this.$emit('hideModal')
+    }
   },
-  mounted() {
-  },
-  methods: {},
   components: {
     Dialog,
+    InputText
   },
 });
 </script>

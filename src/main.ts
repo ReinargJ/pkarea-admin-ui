@@ -10,6 +10,7 @@ import PrimeVue from 'primevue/config';
 import DataTable from 'primevue/datatable';
 import Column from 'primevue/column';
 import InputText from 'primevue/inputtext';
+import Button from 'primevue/button';
 
 import DashboardLayout from './components/DashboardLayout.vue';
 import EmptyLayout from './components/EmptyLayout.vue';
@@ -24,6 +25,7 @@ app.use(PrimeVue);
 app.component('DataTable', DataTable);
 app.component('Column', Column);
 app.component('InputText', InputText);
+app.component('Button', Button);
 
 app.use(router);
 app.mount('#app');
