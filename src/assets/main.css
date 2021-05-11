@@ -21,3 +21,7 @@
 ::-webkit-scrollbar-thumb:hover{
   background: #718096;
 }
+
+:root {
+  --primary-color:#4F46E5;
+}

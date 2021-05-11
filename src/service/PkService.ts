@@ -11,7 +11,7 @@ class PkService {
     }
 
     createPk(pk: any) {
-        return httpCommon.post("/pkarea/update", {insert: [pk]})
+        return httpCommon.post("/pkarea/insert", {pk: pk})
     }
 
     deletePk(pkId: any) {

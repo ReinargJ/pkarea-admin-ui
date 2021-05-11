@@ -7,6 +7,7 @@
 <script lang="ts">
 import { defineComponent, ref, computed } from "vue";
 import { useRouter } from "vue-router";
+import Toast from 'primevue/toast';
 
 const defaultLayout = "default";
 
@@ -20,6 +21,7 @@ export default defineComponent({
 
     return {
       layout,
+      Toast
     };
   },
 });

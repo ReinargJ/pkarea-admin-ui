@@ -1,11 +1,13 @@
 <template>
   <div>
+    <Toast />
     <h3 class="text-gray-700 text-3xl font-medium">PK Area</h3>
     <div class="mt-8">
       <Button
         label="Nouveau PK"
         icon="pi pi-plus"
         iconPos="left"
+        class="p-button-primary"
         @click="onClickModal"
       />
     </div>
@@ -100,14 +102,14 @@
           <label for="debut">PK Debut</label>
           <InputNumber
             id="debut"
-            v-model.trim="newPk.pk_debut"
+            v-model="newPk.pk_debut"
             required="true"
             autofocus
           />
         </div>
         <div class="p-field">
           <label for="fin">PK Fin</label>
-          <InputNumber id="fin" v-model.trim="newPk.pk_fin" autofocus />
+          <InputNumber id="fin" v-model="newPk.pk_fin" autofocus />
         </div>
         <div class="p-field">
           <label for="autoroute">Autoroute</label>
@@ -152,7 +154,7 @@
           <label for="debutZone">PK Debut Zone</label>
           <InputNumber
             id="debutZone"
-            v-model.trim="newPk.pk_debut_zone"
+            v-model="newPk.pk_debut_zone"
             required="true"
             autofocus
           />
@@ -192,6 +194,7 @@ import Dialog from "primevue/dialog";
 import InputText from "primevue/inputtext";
 import InputNumber from "primevue/inputnumber";
 import Dropdown from "primevue/dropdown";
+import Toast from "primevue/toast";
 import { IPk } from "../model/pk";
 
 export default defineComponent({
@@ -207,17 +210,17 @@ export default defineComponent({
       originalRows: {},
       openModal: false,
       newPk: {
-        pk_debut: "",
-        pk_fin: "",
+        pk_debut: 0,
+        pk_fin: 0,
         pk_sens: "",
         pk_autoroute: "",
         pk_voie: "",
         pk_type: "",
-        pk_debut_zone: "",
-        pk_fin_zone: "",
+        pk_debut_zone: 0,
+        pk_fin_zone: 0,
       },
       sens: ["Nord", "Sud"],
-      voies: ["Rapide", "Lente"],
+      voies: ["Rapide", "Mediane", "Lente"],
       autoroutes: ["A41", "A410", "Adelac"],
     };
   },
@@ -238,7 +241,15 @@ export default defineComponent({
   },
   methods: {
     onRowEditSave(event: any) {
-      PkService.updatePk(event.data);
+      PkService.updatePk(event.data)
+        .then((response) => {
+          this.$toast.add({
+            severity: "success",
+            summary: "PK mis à jour",
+            life: 1500,
+          });
+        })
+        .catch(this.displayError);
     },
     onRowEditInit(event) {
       this.originalRows[event.index] = { ...this.pks[event.index] };
@@ -253,31 +264,71 @@ export default defineComponent({
       this.openModal = false;
     },
     savePk() {
-      console.log("save", this.newPk);
+      PkService.createPk(this.newPk)
+        .then((response) => {
+          console.log(response);
+          let id = response.data.insertId;
+          console.log({ id, ...this.newPk });
 
-      PkService.createPk(this.newPk);
+          this.pks.push({ pk_id: id, ...this.newPk });
+          this.$toast.add({
+            severity: "success",
+            summary: "PK créé",
+            life: 1500,
+          });
+          this.newPk = {
+            pk_debut: 0,
+            pk_fin: 0,
+            pk_sens: "",
+            pk_autoroute: "",
+            pk_voie: "",
+            pk_type: "",
+            pk_debut_zone: 0,
+            pk_fin_zone: 0,
+          };
+        })
+        .catch(this.displayError);
       this.openModal = false;
-      this.newPk = {
-        pk_debut: "",
-        pk_fin: "",
-        pk_sens: "",
-        pk_autoroute: "",
-        pk_voie: "",
-        pk_type: "",
-        pk_debut_zone: "",
-        pk_fin_zone: "",
-      };
     },
     deletePk(data: IPk) {
-      this.pks = this.pks.filter(pk => pk.pk_id !== data.pk_id)
+      this.pks = this.pks.filter((pk) => pk.pk_id !== data.pk_id);
+
       PkService.deletePk(data.pk_id)
-    }
+        .then((response) => {
+          this.$toast.add({
+            severity: "success",
+            summary: "PK supprimé",
+            life: 1500,
+          });
+        })
+        .catch(this.displayError);
+    },
+    displayError(err: any) {
+      this.$toast.add({
+        severity: "error",
+        summary: "Une erreur est survenue",
+        detail: err.message,
+        life: 5000,
+      });
+    },
   },
   components: {
     Dialog,
     InputText,
     InputNumber,
     Dropdown,
+    Toast,
   },
 });
 </script>
+
+<style scoped>
+.p-button {
+  background: #4f46e5;
+  color: #fff;
+}
+
+.p-button:hover {
+  background: rgba(79, 70, 229, 0.7);;
+}
+</style>
