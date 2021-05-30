@@ -11,6 +11,8 @@ import DataTable from 'primevue/datatable';
 import Column from 'primevue/column';
 import InputText from 'primevue/inputtext';
 import Button from 'primevue/button';
+import Toast from "primevue/toast";
+
 
 import DashboardLayout from './components/DashboardLayout.vue';
 import EmptyLayout from './components/EmptyLayout.vue';
@@ -27,6 +29,7 @@ app.component('DataTable', DataTable);
 app.component('Column', Column);
 app.component('InputText', InputText);
 app.component('Button', Button);
+app.component('Toast', Toast);
 app.use(ToastService);
 
 app.use(router);

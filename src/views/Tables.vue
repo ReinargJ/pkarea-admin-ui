@@ -39,9 +39,13 @@
         ></Column>
         <Column field="pk_voie" header="Voie" sortable="true"
           ><template #editor="slotProps">
-            <InputText
-              v-model="slotProps.data[slotProps.column.props.field]"
-            /> </template
+            <Dropdown
+            id="voie"
+            v-model="slotProps.data[slotProps.column.props.field]"
+            required="true"
+            autofocus
+            :options="voies"
+          /> </template
         ></Column>
         <Column field="pk_type" header="Type" sortable="true"
           ><template #editor="slotProps">
@@ -291,10 +295,10 @@ export default defineComponent({
       this.openModal = false;
     },
     deletePk(data: IPk) {
-      this.pks = this.pks.filter((pk) => pk.pk_id !== data.pk_id);
 
       PkService.deletePk(data.pk_id)
         .then((response) => {
+      this.pks = this.pks.filter((pk) => pk.pk_id !== data.pk_id);
           this.$toast.add({
             severity: "success",
             summary: "PK supprimé",
