@@ -255,7 +255,7 @@ export default defineComponent({
         })
         .catch(this.displayError);
     },
-    onRowEditInit(event) {
+    onRowEditInit(event: any) {
       this.originalRows[event.index] = { ...this.pks[event.index] };
     },
     onRowEditCancel(event: any) {
@@ -266,6 +266,9 @@ export default defineComponent({
     },
     onCloseModal() {
       this.openModal = false;
+    },
+    onHide(){
+
     },
     savePk() {
       PkService.createPk(this.newPk)

@@ -63,7 +63,7 @@ export default defineComponent({
     function login() {
       const http = axios.create();
       const result = http
-        .post("http://localhost:10000/auth/login", {
+        .post("http://api.jgranier.fr/auth/login", {
           email: model.email,
           password: model.password,
         })

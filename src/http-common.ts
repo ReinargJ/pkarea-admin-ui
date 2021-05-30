@@ -1,7 +1,7 @@
 import axios from "axios";
 
 export default axios.create({
-  baseURL: "http://localhost:10000",
+  baseURL: "http://api.jgranier.fr",
   headers: {
     "Content-type": "application/json"
   }

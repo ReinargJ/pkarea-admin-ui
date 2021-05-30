@@ -6,7 +6,7 @@ import { IPk } from '../model/pk';
 const fetchPks = async () => {
   const http = axios.create(); // unsecured
 
-  return await http.get<IPk[]>("http://localhost:10000/pkarea");
+  return await http.get<IPk[]>("http://api.jgranier.fr/pkarea");
 }
 
 export async function usePkData() {
